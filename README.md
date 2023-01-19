@@ -4,6 +4,8 @@ NDL古典籍OCRを利用してテキスト化を実行するためのアプリ�
 本プログラムは、国立国会図書館が[令和3年度OCR関連事業](https://lab.ndl.go.jp/data_set/ocr/)から得られた知見や、
 [NDLラボ](https://lab.ndl.go.jp)におけるこれまでの調査研究活動、そして人文情報学分野において構築・蓄積されてきたデータ資源を活用することで独自に開発したものです。
 
+本プログラムを開発するにあたって利用したデータセットや手法の詳細については、[古典籍資料のOCRテキスト化実験](https://lab.ndl.go.jp/data_set/r4ocr/r4_koten/)及び[NDL古典籍OCR学習用データセット（みんなで翻刻加工データ）](https://github.com/ndl-lab/ndl-minhon-ocrdataset)も参照してください。
+
 本プログラムは、国立国会図書館がCC BY 4.0ライセンスで公開するものです。詳細については
 [LICENSE](./LICENSE
 )をご覧ください。
