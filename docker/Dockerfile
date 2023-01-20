@@ -19,7 +19,7 @@ ENV LANGUAGE ja_JP:ja
 ENV LC_ALL=ja_JP.UTF-8
 RUN localedef -f UTF-8 -i ja_JP ja_JP.utf8
 
-RUN set -x && apt -y install libgl1-mesa-dev libglib2.0-0 git
+RUN set -x && apt -y install libgl1-mesa-dev libglib2.0-0 zip git
 RUN set -x \
     && apt -y install python3.7 python3.7-dev \
     && ln -s /usr/bin/python3.7 /usr/bin/python \
