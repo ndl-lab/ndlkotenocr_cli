@@ -1,0 +1,3 @@
+[submodule "src/ndl_kotenseki_layout/mmdetection"]
+	path = src/ndl_kotenseki_layout/mmdetection
+	url = https://github.com/ndl-lab/mmdetection.git
