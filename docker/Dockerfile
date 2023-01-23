@@ -32,7 +32,6 @@ RUN set -x \
 RUN set -x && pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 -f https://download.pytorch.org/whl/lts/1.8/torch_lts.html
 RUN set -x && cd ${PROJECT_DIR}/src/text_kotenseki_recognition/ && unzip -o models.zip
 RUN set -x && cd ${PROJECT_DIR}/src/ndl_kotenseki_layout/ && unzip -o models.zip
-#RUN set -x && cd ${PROJECT_DIR}/src/ndl_kotenseki_layout/mmdetection && python setup.py bdist_wheel && pip install dist/*.whl
 RUN set -x && pip install mmcv-full==1.5.3 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.8.0/index.html
 
 WORKDIR ${PROJECT_DIR}
