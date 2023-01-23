@@ -13,7 +13,6 @@ import cv2
 import torch
 from torch.utils.data import Dataset
 from PIL import Image
-from IPython.display import display
 from transformers import VisionEncoderDecoderModel
 from transformers import TrOCRProcessor
 from transformers import AutoTokenizer,AutoModelForMaskedLM
@@ -52,16 +51,16 @@ class TextRecognizer:
     def predict(self, imageslist,coordslist):
         result = []
         imagelength=len(imageslist)
-        step_num=imagelength//this.batchsize
-        if imagelength%this.batchsize!=0:
+        step_num=imagelength//self.batchsize
+        if imagelength%self.batchsize!=0:
             step_num+=1
         for step in range(step_num):
             try:
                 generated_ids = self.ocrmodel.generate(
-                    self.ocrprocessor(imageslist[step*this.batchsize:(step+1):this.batchsize],
+                    self.ocrprocessor(imageslist[step*self.batchsize:(step+1)*self.batchsize],
                                       return_tensors="pt").pixel_values.to(self.device, torch.float))
                 restextlist = self.ocrtokenizer.batch_decode(generated_ids, skip_special_tokens=True)
-                for rect, restext in zip(coordslist[step*this.batchsize:(step+1):this.batchsize], restextlist):
+                for rect, restext in zip(coordslist[step*self.batchsize:(step+1)*self.batchsize], restextlist):
                     xmin, ymin, xmax, ymax = rect
                     result.append([xmin, ymin, xmax, ymax, restext])
             except:

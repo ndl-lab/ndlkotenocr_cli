@@ -162,7 +162,7 @@ class InferencerWithCLI:
         self.detector = LayoutDetector(config, checkpoint, device)
 
     def inference_wich_cli(self, img=None, img_path='',
-                           score_thr: float = 0.3, dump: bool = False):
+                           score_thr: float = 0.3):
         # prediction
         if self.detector is None:
             print('ERROR: Layout detector is not created.')

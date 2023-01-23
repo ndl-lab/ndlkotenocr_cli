@@ -13,7 +13,7 @@ import sys
 import time
 import xml
 import xml.etree.ElementTree as ET
-
+import json
 from . import utils
 from .. import procs
 
@@ -83,7 +83,7 @@ class OcrInferencer:
                 pred_list = self._infer(single_outputdir_data)
 
                 # save inferenced json in json directory
-                self._save_pred_json(single_outputdir_data['output_dir'], [single_data['json'] for single_data in pred_list])
+                #self._save_pred_json(single_outputdir_data['output_dir'], [single_data['json'] for single_data in pred_list])
         if len(self.time_statistics) == 0:
             print('================== NO VALID INFERENCE ==================')
         else:
@@ -138,8 +138,8 @@ class OcrInferencer:
                     single_data_output = proc.do(idx, single_data_input)
                     single_page_output.extend(single_data_output)
                 # save inference result data to dump
-                if 'json' in single_image_file_data[0].keys():
-                    pred_xml_dict_for_dump[proc.proc_name].append(single_image_file_data[0]['json'])
+                #if 'json' in single_image_file_data[0].keys():
+                #    pred_xml_dict_for_dump[proc.proc_name].append(single_image_file_data[0]['json'])
 
                 single_image_file_data = single_page_output
 
@@ -151,6 +151,9 @@ class OcrInferencer:
                 main_txt=single_data_output['text']
                 sum_main_txt += main_txt + '\n'
             self._save_pred_txt(sum_main_txt,os.path.basename(img_path), single_outputdir_data['output_dir'])
+            self._save_pred_json(single_outputdir_data['output_dir'],os.path.basename(img_path),
+                    [single_data['json'] for single_data in single_image_file_output])
+
             # add inference result for single image file data to pred_list, including XML data
             pred_list.extend(single_image_file_output)
             print('########  END PAGE INFERENCE PROCESS  ########')
@@ -273,8 +276,6 @@ class OcrInferencer:
         }]
 
         full_xml = None
-        if 'xml' in single_dir_data.keys():
-            full_xml = single_dir_data['xml']
 
         # get img data for single page
         orig_img = cv2.imread(img_path)
@@ -317,7 +318,7 @@ class OcrInferencer:
             proc_list.append(self.full_proc_list[i](cfg, i))
         return proc_list
 
-    def _save_pred_xml(self, output_dir, pred_list):
+    def _save_pred_json(self, output_dir,orig_img_name, pred_list):
         """
         推論結果のXMLデータをまとめたXMLファイルを生成して保存します。
 
@@ -329,14 +330,18 @@ class OcrInferencer:
             1ページ分の推論結果を要素に持つ推論結果のリスト。
             各結果は辞書型で保持されています。
         """
-        xml_dir = os.path.join(output_dir, 'xml')
-        os.makedirs(xml_dir, exist_ok=True)
-
-        # basically, output_dir is supposed to be PID, so it used as xml filename
-        xml_path = os.path.join(xml_dir, '{}.xml'.format(os.path.basename(output_dir)))
-        pred_xml = self._parse_pred_list_to_save(pred_list)
-        utils.save_xml(pred_xml, xml_path)
+        json_dir = os.path.join(output_dir, 'json')
+        os.makedirs(json_dir, exist_ok=True)
+        stem, _ = os.path.splitext(orig_img_name)
+        json_path = os.path.join(json_dir, '{}.json'.format(stem))
+        try:
+            with open(json_path, 'w') as wf:
+                json.dump(pred_list, wf, indent=2, ensure_ascii=False )
+        except OSError as err:
+            print("[ERROR] Main text save error: {0}".format(err), file=sys.stderr)
+            raise OSError
         return
+
 
     def _save_image(self, pred_img, orig_img_name, img_output_dir, id=''):
         """

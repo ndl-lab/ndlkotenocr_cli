@@ -12,7 +12,7 @@ from .utils import auto_run
 from typing import List
 import joblib
 import pandas as pd
-
+import statistics
 
 def calcfeatures(tmpcoordlist):
     width=0
@@ -138,7 +138,7 @@ class ReadingReorder:
             word["isTextline"] = "true"
             word["confidence"] = 1
             resultwords.append(word)
-        text = "".join(df["text"].tolist())
+        text = "".join(resdf["text"].tolist())
         return resultwords,text
 
 
@@ -152,10 +152,11 @@ class InferencerWithCLI:
         checkpoint = conf_dict['checkpoint_path']
         self.reorder = ReadingReorder(checkpoint)
 
-    def inference_wich_cli(self, coordlist):
+    def inference_wich_cli(self, obj):
         if self.reorder is None:
             print('ERROR: Reading Reorder is not created.')
             return None
+        coordlist=obj["json"]
         resultwords,text = self.reorder.predict(coordlist)
         return {'json': resultwords, 'text': text}
 

@@ -32,8 +32,9 @@ def help(ctx):
 @click.pass_context
 @click.argument('input_root')
 @click.argument('output_root')
+@click.option('-s', '--input_structure', type=click.Choice(['s', 'i', 't', 'w', 'f'], case_sensitive=True), default='s', help='Input directory structure type. s(single) and f(image_file).')
 @click.option('-c', '--config_file', type=str, default='config.yml', help='Configuration yml file for inference. Default is "config.yml".')
-def infer(ctx, input_root, output_root, config_file):
+def infer(ctx, input_root, output_root, config_file,input_structure):
     """
     \b
     INPUT_ROOT   \t: Input data directory for inference.
@@ -47,7 +48,8 @@ def infer(ctx, input_root, output_root, config_file):
     cfg = {
         'input_root': input_root,
         'output_root': output_root,
-        'config_file': config_file
+        'config_file': config_file,
+        'input_structure': input_structure
     }
 
     # check if input_root exists

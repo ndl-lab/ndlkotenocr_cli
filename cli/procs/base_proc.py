@@ -73,8 +73,7 @@ class BaseInferenceProcess:
             raise ValueError('Inference output error in {0}.'.format(self.proc_name))
 
         # dump inference result
-        if self.cfg['dump']:
-            self._dump_result(input_data, result, data_idx)
+        #self._dump_result(input_data, result, data_idx)
 
         return result
 

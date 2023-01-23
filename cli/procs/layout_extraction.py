@@ -67,8 +67,7 @@ class LayoutExtractionProcess(BaseInferenceProcess):
         output_data = copy.deepcopy(input_data)
         inference_output = self._run_src_inference(img=input_data['img'],
                                                    img_path=input_data['img_file_name'],
-                                                   score_thr=self.cfg['ndl_kotenseki_layout']['score_thr'],
-                                                   dump=(self.cfg['dump'] or self.cfg['save_image']))
+                                                   score_thr=self.cfg['ndl_kotenseki_layout']['score_thr'])
 
         # Create result to pass json
         result = []
