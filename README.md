@@ -15,14 +15,9 @@ NDL古典籍OCRは、江戸期以前の和古書、清代以前の漢籍とい�
 ## 環境構築
 
 ### 1. リポジトリのクローン
-本リポジトリは一部の機能に、NDLOCRが利用しているモジュールを再利用しています。
-
-これらのモジュールはhttps://github.com/ndl-lab
-において公開しているリポジトリであり、本リポジトリとの間をsubmoduleで紐づけています。
-
-リポジトリをclone する際は、次のコマンドを実行すると、関連リポジトリを一度に取得することができます。
+下記のコマンドを実行してください。
 ```
-git clone --recursive https://github.com/ndl-lab/ndlkotenocr_cli
+git clone https://github.com/ndl-lab/ndlkotenocr_cli
 ```
 
 ### 2. ホストマシンのNVIDIA Driverのアップデート
