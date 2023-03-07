@@ -1,8 +1,8 @@
 click
 lmdb==1.2.1
 natsort==7.1.1
-nltk==3.6.2
-numpy==1.21.6
+nltk==3.6.6
+numpy==1.22.4
 albumentations==1.2.1
 opencv-python==4.6.0.66
 protobuf==3.19.6
