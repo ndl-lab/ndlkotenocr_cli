@@ -1,5 +1,5 @@
-torch==1.8.1
-torchvision==0.9.1
+torch
+torchvision
 tqdm==4.60.0
 lmdb==1.2.1
 opencv-python==4.5.1.48
@@ -7,6 +7,6 @@ six==1.15.0
 natsort==7.1.1
 nltk==3.6.6
 more-itertools==8.12.0
-Pillow==9.2.0
+Pillow==9.3.0
 joblib==1.2.0
 transformers==4.19.1
