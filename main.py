@@ -55,13 +55,13 @@ def infer(ctx, input_root, output_root, config_file,input_structure):
     # check if input_root exists
     if not os.path.exists(input_root):
         print('INPUT_ROOT not found :{0}'.format(input_root), file=sys.stderr)
-        exit(0)
+        sys.exit(0)
 
     # parse command line option
     infer_cfg = utils.parse_cfg(cfg)
     if infer_cfg is None:
         print('[ERROR] Config parse error :{0}'.format(input_root), file=sys.stderr)
-        exit(1)
+        sys.exit(1)
 
     # prepare output root derectory
     infer_cfg['output_root'] = utils.mkdir_with_duplication_check(infer_cfg['output_root'])
