@@ -19,13 +19,11 @@ from .. import procs
 
 # Add import path for src modules
 currentdir = pathlib.Path(__file__).resolve().parent
-#sys.path.append(str(currentdir) + "/../../src/separate_pages_ssd")
 sys.path.append(str(currentdir) + "/../../src/ndl_kotenseki_layout")
-#sys.path.append(str(currentdir) + "/../../src/deskew_HT")
 sys.path.append(str(currentdir) + "/../../src/text_kotenseki_recognition")
 sys.path.append(str(currentdir) + "/../../src/kotenseki_reading_order")
 # supported image type list
-supported_img_ext = ['.jpg', '.jpeg', '.jp2', 'png']
+supported_img_ext = ['.jpg', '.jpeg', '.jp2', '.png']
 
 
 class OcrInferencer:
@@ -77,7 +75,6 @@ class OcrInferencer:
             print(single_outputdir_data_list)
             # do infer with input data for single output data dir
             for single_outputdir_data in single_outputdir_data_list:
-                print(single_outputdir_data)
                 if single_outputdir_data is None:
                     continue
                 pred_list = self._infer(single_outputdir_data)
@@ -94,7 +91,7 @@ class OcrInferencer:
 
     def _infer(self, single_outputdir_data):
         """
-        self.cfgに保存された設定に基づき、XML一つ分のデータに対する推論処理を実行します。
+        self.cfgに保存された設定に基づき、JSON一つ分のデータに対する推論処理を実行します。
 
         Parameters
         ----------
@@ -108,19 +105,8 @@ class OcrInferencer:
             1ページ分の推論結果を要素に持つ推論結果のリスト。
             各結果は辞書型で保持されています。
         """
-        # single_outputdir_data dictionary include [key, value] pairs as below
-        # (xml is not always included)
-        #   [key, value]: ['img', numpy.ndarray], ['xml', xml_tree]
         pred_list = []
         pred_xml_dict_for_dump = {}
-        """if self.cfg['dump']:
-            dump_dir = os.path.join(single_outputdir_data['output_dir'], 'dump')
-            os.makedirs(dump_dir, exist_ok=True)
-
-            for proc in self.proc_list:
-                pred_xml_dict_for_dump[proc.proc_name] = []
-                proc_dump_dir = os.path.join(dump_dir, proc.proc_name)
-                os.makedirs(proc_dump_dir, exist_ok=True)"""
 
         for img_path in single_outputdir_data['img_list']:
             single_image_file_data = self._get_single_image_file_data(img_path, single_outputdir_data)
@@ -131,15 +117,11 @@ class OcrInferencer:
 
             print('######## START PAGE INFERENCE PROCESS ########')
             start_page = time.time()
-
             for proc in self.proc_list:
                 single_page_output = []
                 for idx, single_data_input in enumerate(single_image_file_data):
                     single_data_output = proc.do(idx, single_data_input)
                     single_page_output.extend(single_data_output)
-                # save inference result data to dump
-                #if 'json' in single_image_file_data[0].keys():
-                #    pred_xml_dict_for_dump[proc.proc_name].append(single_image_file_data[0]['json'])
 
                 single_image_file_data = single_page_output
 
@@ -150,11 +132,29 @@ class OcrInferencer:
             for single_data_output in single_image_file_output:
                 main_txt=single_data_output['text']
                 sum_main_txt += main_txt + '\n'
-            self._save_pred_txt(sum_main_txt,os.path.basename(img_path), single_outputdir_data['output_dir'])
-            self._save_pred_json(single_outputdir_data['output_dir'],os.path.basename(img_path),
-                    [single_data['json'] for single_data in single_image_file_output])
+            
+            outputdirpath=single_outputdir_data['output_dir']
 
-            # add inference result for single image file data to pred_list, including XML data
+            if self.cfg['input_structure'] in ["b"]:
+                outputdirpath=os.path.join(single_outputdir_data['output_dir'],
+                        os.path.basename(os.path.dirname(img_path)))
+                os.makedirs(outputdirpath,exist_ok=True)
+            
+            self._save_pred_txt(sum_main_txt,os.path.basename(img_path), outputdirpath)
+            if self.cfg['add_info']:
+                self._save_pred_json(outputdirpath,os.path.basename(img_path),
+                    {"contents":single_image_file_output[0]["json"],
+                        "imginfo":{
+                            "img_width":single_image_file_output[0]["img_width"],
+                            "img_height":single_image_file_output[0]["img_height"],
+                            "img_path":img_path,
+                            "img_name":os.path.basename(img_path)
+                            }
+                        })
+            else:
+                self._save_pred_json(outputdirpath,os.path.basename(img_path),
+                        [single_data['json'] for single_data in single_image_file_output])
+            
             pred_list.extend(single_image_file_output)
             print('########  END PAGE INFERENCE PROCESS  ########')
 
@@ -162,18 +162,18 @@ class OcrInferencer:
 
     def _get_single_dir_data(self, input_dir):
         """
-        XML一つ分の入力データに関する情報を整理して取得します。
+        JSON一つ分の入力データに関する情報を整理して取得します。
 
         Parameters
         ----------
         input_dir : str
-            XML一つ分の入力データが保存されているディレクトリパスです。
+            JSON一つ分の入力データが保存されているディレクトリパスです。
 
         Returns
         -------
         # Fixme
         single_dir_data : dict
-            XML一つ分のデータ（基本的に1PID分を想定）の入力データ情報です。
+            JSON一つ分のデータ（基本的に1PID分を想定）の入力データ情報です。
             画像ファイルパスのリスト、それらに対応するXMLデータを含みます。
         """
         single_dir_data = {'input_dir': os.path.abspath(input_dir)}
@@ -189,6 +189,9 @@ class OcrInferencer:
         elif not os.path.isdir(os.path.join(input_dir, 'img')):
             print('[ERROR] Input img diretctory not found in {}'.format(input_dir), file=sys.stderr)
             return None
+        elif self.cfg['input_structure'] in ['b']:
+            for ext in supported_img_ext:
+                single_dir_data['img_list'].extend(sorted(glob.glob(os.path.join(input_dir, 'img/*/*{0}'.format(ext)))))
         else:
             for ext in supported_img_ext:
                 single_dir_data['img_list'].extend(sorted(glob.glob(os.path.join(input_dir, 'img/*{0}'.format(ext)))))
@@ -197,7 +200,7 @@ class OcrInferencer:
         if self.cfg['input_structure'] in ['f']:
             stem, ext = os.path.splitext(os.path.basename(input_dir))
             output_dir = os.path.join(self.cfg['output_root'], stem)
-        elif self.cfg['input_structure'] in ['i', 's']:
+        elif self.cfg['input_structure'] in ['i', 's', 'b']:
             dir_name = os.path.basename(input_dir)
             output_dir = os.path.join(self.cfg['output_root'], dir_name)
         else:
@@ -212,7 +215,7 @@ class OcrInferencer:
 
     def _get_single_dir_data_from_tosho_data(self, input_dir):
         """
-        XML一つ分の入力データに関する情報を整理して取得します。
+        JSON一つ分の入力データに関する情報を整理して取得します。
 
         Parameters
         ----------
@@ -228,9 +231,10 @@ class OcrInferencer:
         single_dir_data_list = []
 
         # get img list of input directory
-        tmp_img_list = sorted(glob.glob(os.path.join(input_dir, '*.jp2')))
-        tmp_img_list.extend(sorted(glob.glob(os.path.join(input_dir, '*.jpg'))))
-
+        tmp_img_list=[]
+        for ext in supported_img_ext:
+            tmp_img_list.extend(glob.glob(os.path.join(input_dir, '*'+ext)))
+        tmp_img_list=sorted(tmp_img_list)
         pid_list = []
         for img in tmp_img_list:
             pid = os.path.basename(img).split('_')[0]
@@ -282,7 +286,10 @@ class OcrInferencer:
         if orig_img is None:
             print('[ERROR] Image read error : {0}'.format(img_path), file=sys.stderr)
             return None
+        imgh,imgw=orig_img.shape[:2]
         single_image_file_data[0]['img'] = orig_img
+        single_image_file_data[0]['img_width'] = imgw
+        single_image_file_data[0]['img_height'] = imgh
 
         # return if this proc needs only img data for input
         if full_xml is None:
@@ -320,7 +327,7 @@ class OcrInferencer:
 
     def _save_pred_json(self, output_dir,orig_img_name, pred_list):
         """
-        推論結果のXMLデータをまとめたXMLファイルを生成して保存します。
+        推論結果のXMLデータをまとめたJSONファイルを生成して保存します。
 
         Parameters
         ----------

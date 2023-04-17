@@ -32,9 +32,10 @@ def help(ctx):
 @click.pass_context
 @click.argument('input_root')
 @click.argument('output_root')
-@click.option('-s', '--input_structure', type=click.Choice(['s', 'i', 't', 'w', 'f'], case_sensitive=True), default='s', help='Input directory structure type. s(single) and f(image_file).')
+@click.option('-s', '--input_structure', type=click.Choice(['s', 'b', 'f','i'], case_sensitive=True), default='s', help='Input directory structure type. s(single) and f(image_file).')
 @click.option('-c', '--config_file', type=str, default='config.yml', help='Configuration yml file for inference. Default is "config.yml".')
-def infer(ctx, input_root, output_root, config_file,input_structure):
+@click.option('-a','--add_info', is_flag=True, help='Record information about the source image in the output json file. (Note that the json format will change.)')
+def infer(ctx, input_root, output_root, config_file,input_structure, add_info):
     """
     \b
     INPUT_ROOT   \t: Input data directory for inference.
@@ -44,12 +45,14 @@ def infer(ctx, input_root, output_root, config_file,input_structure):
     click.echo('input_root : {0}'.format(input_root))
     click.echo('output_root : {0}'.format(output_root))
     click.echo('config_file : {0}'.format(config_file))
+    click.echo('add_info : {0}'.format(add_info))
 
     cfg = {
         'input_root': input_root,
         'output_root': output_root,
         'config_file': config_file,
-        'input_structure': input_structure
+        'input_structure': input_structure,
+        'add_info': add_info
     }
 
     # check if input_root exists

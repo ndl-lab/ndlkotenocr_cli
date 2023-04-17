@@ -68,6 +68,29 @@ def parse_cfg(cfg_dict):
         # - Image file input mode
         # input_root is equal to input image file path
         infer_cfg['input_dirs'] = [infer_cfg['input_root']]
+    elif infer_cfg['input_structure'] in ['b']:
+        # - Book  input mode
+        # input_root is equal to input image file path
+        infer_cfg['input_dirs'] = [infer_cfg['input_root']]
+        # - Sigle input dir mode
+        # input_root
+        #  └── img
+        #     ├── bookid1
+        #     |       ├── page01.jpg
+        #     │      ├── page02.jpg
+        #     │   ・・・
+        #     │      └── page10.jpg
+        #     ├── bookid2
+        #             ├── page01.jpg
+        #             ├── page02.jpg
+        #          ・・・
+        #             └── page10.jpg
+
+        # validation check for input dir structure
+        if not os.path.isdir(os.path.join(infer_cfg['input_root'], 'img')):
+            print('[ERROR] Input img diretctory not found in {}'.format(infer_cfg['input_root']), file=sys.stderr)
+            return None
+        infer_cfg['input_dirs'] = [infer_cfg['input_root']]
     else:
         print('[ERROR] Unexpected input directory structure type: {0}.'.format(infer_cfg['input_structure']), file=sys.stderr)
         return None

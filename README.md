@@ -129,6 +129,86 @@ output_dir/
 
 重みファイルのパス等、各モジュールで利用する設定値は`config.yml`の内容を修正することで変更することができます。
 
+### オプションについて
+
+#### 入力形式オプション
+実行時に
+-s b を指定することで、次の入力形式のフォルダ構造を処理できます。
+
+例：
+```
+python main.py infer input_root output_dir -s b
+```
+
+入力形式
+```
+input_root/
+  └── img
+      ├── bookid1
+      │   ├── page01.jpg
+      │   ├── page02.jpg
+      │   ・・・
+      │   └── page10.jpg
+      ├── bookid2
+          ├── page01.jpg
+          ├── page02.jpg
+          ・・・
+          └── page10.jpg
+```
+出力形式
+```
+output_dir/
+  ├── input_root
+  |     ├──bookid1
+  │     |     ├── txt
+  │     |     │     ├── page01.txt
+  │     |     │     ├── page02.txt
+  │     |     │         ・・・
+  │     |     │    
+  │     |     └── json
+  │     |           ├── page01.json
+  │     |           ├── page02.json
+  │     |               ・・・
+  |     ├──bookid2
+  │     |     ├── txt
+  │     |     │     ├── page01.txt
+  │     |     │     ├── page02.txt
+  │     |     │         ・・・
+  │     |     │    
+  │     |     └── json
+  │     |           ├── page01.json
+  │     |           ├── page02.json
+  │                    ・・・
+  └── opt.json
+```
+
+#### 画像サイズ出力オプション
+実行時に
+-a を指定することで、出力jsonに画像サイズ情報を追加します。
+
+例：
+```
+python main.py infer input_root output_dir -a
+```
+
+**注意**
+このオプションを有効化すると出力jsonの形式が以下の構造になります。
+```
+{
+  "contents":{
+    (各文字列矩形の座標、認識文字列等)
+  },
+  "imginfo": {
+    "img_width": (元画像の幅),
+    "img_height": (元画像の高さ),
+    "img_path":（元画像のディレクトリパス）,
+    "img_name":（元画像名）
+  }
+}
+```
+
+
+
 #### オプション情報の保存
 出力ディレクトリでは、実行時に指定したオプション情報が`opt.json`に保存されています。
 
