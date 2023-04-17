@@ -146,7 +146,9 @@ class OcrInferencer:
                     {"contents":single_image_file_output[0]["json"],
                         "imginfo":{
                             "img_width":single_image_file_output[0]["img_width"],
-                            "img_height":single_image_file_output[0]["img_height"]
+                            "img_height":single_image_file_output[0]["img_height"],
+                            "img_path":img_path,
+                            "img_name":os.path.basename(img_path)
                             }
                         })
             else:
