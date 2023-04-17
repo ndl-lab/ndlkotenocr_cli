@@ -200,7 +200,9 @@ python main.py infer input_root output_dir -a
   },
   "imginfo": {
     "img_width": (元画像の幅),
-    "img_height": (元画像の高さ)
+    "img_height": (元画像の高さ),
+    "img_path":（元画像のディレクトリパス）,
+    "img_name":（元画像名）
   }
 }
 ```
