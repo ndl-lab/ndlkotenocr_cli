@@ -21,7 +21,8 @@ from .. import procs
 currentdir = pathlib.Path(__file__).resolve().parent
 sys.path.append(str(currentdir) + "/../../src/ndl_kotenseki_layout")
 sys.path.append(str(currentdir) + "/../../src/text_kotenseki_recognition")
-sys.path.append(str(currentdir) + "/../../src/kotenseki_reading_order")
+#sys.path.append(str(currentdir) + "/../../src/kotenseki_reading_order")
+sys.path.append(str(currentdir) + "/../../src/reading_order")
 # supported image type list
 supported_img_ext = ['.jpg', '.jpeg', '.jp2', '.png']
 
@@ -51,7 +52,8 @@ class OcrInferencer:
         self.full_proc_list = [
             procs.LayoutExtractionProcess,  # 0: レイアウト抽出           出力：（JSON：あり、TXT：なし）
             procs.LineOcrProcess,           # 1: 文字認識(OCR)            出力：（JSON：あり、TXT：なし）
-            procs.ReadingReorderProcess     # 2: 読み順整序               出力：（JSON：あり、TXT：あり）
+            #procs.ReadingReorderProcess     # 2: 読み順整序               出力：（JSON：あり、TXT：あり）
+            procs.LineOrderProcess     # 2: 読み順整序               出力：（JSON：あり、TXT：あり）
         ]
         self.proc_list = self._create_proc_list(cfg)
         self.cfg = cfg
