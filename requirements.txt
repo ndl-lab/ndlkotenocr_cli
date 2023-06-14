@@ -7,7 +7,6 @@ albumentations==1.2.1
 opencv-python==4.6.0.66
 protobuf==3.19.6
 pyyaml
-scikit-image==0.16.2
 scipy==1.7.3
 lightgbm==3.3.2
 transformers==4.19.1
