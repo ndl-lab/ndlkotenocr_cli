@@ -116,9 +116,9 @@ class LayoutDetector:
 
 def convert_to_coordlist(result, score_thr: float = 0.3):
     resultlist=[]
-    for rect in result[0][0]:
-        if rect[4] >= score_thr:
-            resultlist.append([int(x) for x in rect[0:4].tolist()])
+    for rect,score in zip(result.pred_instances.bboxes,result.pred_instances.scores):
+        if score >= score_thr:
+            resultlist.append([int(x) for x in rect.tolist()])
     return resultlist
 
 

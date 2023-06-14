@@ -1,5 +1,12 @@
 model = dict(
     type='CascadeRCNN',
+    data_preprocessor=dict(
+        type='DetDataPreprocessor',
+        mean=[123.675, 116.28, 103.53],
+        std=[58.395, 57.12, 57.375],
+        bgr_to_rgb=True,
+        pad_mask=True,
+        pad_size_divisor=32),
     backbone=dict(
         type='mmcls.ConvNeXt',
         arch='tiny',
@@ -253,34 +260,18 @@ train_pipeline = [
                       'keep_ratio':
                       True
                   }]]),
-    dict(
-        type='Normalize',
-        mean=[123.675, 116.28, 103.53],
-        std=[58.395, 57.12, 57.375],
-        to_rgb=True),
-    dict(type='Pad', size_divisor=32),
-    dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks'])
+    #dict(type='DefaultFormatBundle'),
+    #dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks'])
+    dict(type='PackDetInputs')
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(
-        type='MultiScaleFlipAug',
-        img_scale=(1333, 800),
-        flip=False,
-        transforms=[
-            dict(type='Resize', keep_ratio=True),
-            dict(type='RandomFlip'),
-            dict(
-                type='Normalize',
-                mean=[123.675, 116.28, 103.53],
-                std=[58.395, 57.12, 57.375],
-                to_rgb=True),
-            dict(type='Pad', size_divisor=32),
-            dict(type='ImageToTensor', keys=['img']),
-            dict(type='Collect', keys=['img'])
-        ])
+    dict(type='Resize', scale=(1333, 800), keep_ratio=True),
+    dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
+    dict(type='PackDetInputs',
+        meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape','scale_factor'))
 ]
+"""
 data = dict(
     samples_per_gpu=24,
     workers_per_gpu=4,
@@ -289,111 +280,50 @@ data = dict(
         ann_file=
         '/hdd1/kotensekiocrmodel/layoutinputs/kotensekicocotrain/train_kotensekicocotrain.json',
         img_prefix='/hdd1/kotensekiocrmodel/layoutinputs/kotensekicocotrain/img/',
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
-            dict(type='RandomFlip', flip_ratio=0.5),
-            dict(
-                type='AutoAugment',
-                policies=[[{
-                    'type':
-                    'Resize',
-                    'img_scale': [(480, 1333), (512, 1333), (544, 1333),
-                                  (576, 1333), (608, 1333), (640, 1333),
-                                  (672, 1333), (704, 1333), (736, 1333),
-                                  (768, 1333), (800, 1333)],
-                    'multiscale_mode':
-                    'value',
-                    'keep_ratio':
-                    True
-                }],
-                          [{
-                              'type': 'Resize',
-                              'img_scale': [(400, 1333), (500, 1333),
-                                            (600, 1333)],
-                              'multiscale_mode': 'value',
-                              'keep_ratio': True
-                          }, {
-                              'type': 'RandomCrop',
-                              'crop_type': 'absolute_range',
-                              'crop_size': (384, 600),
-                              'allow_negative_crop': True
-                          }, {
-                              'type':
-                              'Resize',
-                              'img_scale': [(480, 1333), (512, 1333),
-                                            (544, 1333), (576, 1333),
-                                            (608, 1333), (640, 1333),
-                                            (672, 1333), (704, 1333),
-                                            (736, 1333), (768, 1333),
-                                            (800, 1333)],
-                              'multiscale_mode':
-                              'value',
-                              'override':
-                              True,
-                              'keep_ratio':
-                              True
-                          }]]),
-            dict(
-                type='Normalize',
-                mean=[123.675, 116.28, 103.53],
-                std=[58.395, 57.12, 57.375],
-                to_rgb=True),
-            dict(type='Pad', size_divisor=32),
-            dict(type='DefaultFormatBundle'),
-            dict(
-                type='Collect',
-                keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks'])
-        ]),
+        pipeline=train_pipeline),
     val=dict(
         type='TinyDataset',
         ann_file=
         '/hdd1/kotensekiocrmodel/layoutinputs/kotensekicocovalid/train_kotensekicocovalid.json',
         img_prefix='/hdd1/kotensekiocrmodel/layoutinputs/kotensekicocovalid/img/',
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            dict(
-                type='MultiScaleFlipAug',
-                img_scale=(1333, 800),
-                flip=False,
-                transforms=[
-                    dict(type='Resize', keep_ratio=True),
-                    dict(type='RandomFlip'),
-                    dict(
-                        type='Normalize',
-                        mean=[123.675, 116.28, 103.53],
-                        std=[58.395, 57.12, 57.375],
-                        to_rgb=True),
-                    dict(type='Pad', size_divisor=32),
-                    dict(type='ImageToTensor', keys=['img']),
-                    dict(type='Collect', keys=['img'])
-                ])
-        ]),
+        pipeline=test_pipeline),
     test=dict(
         type='TinyDataset',
         ann_file=
         '/hdd1/kotensekiocrmodel/kotensekicocovalid/train_kotensekicocovalid.json',
         img_prefix='/home/t-aoike/layoutinputs/kotensekicocovalid/img/',
-        pipeline=[
-            dict(type='LoadImageFromFile'),
-            dict(
-                type='MultiScaleFlipAug',
-                img_scale=(1333, 800),
-                flip=False,
-                transforms=[
-                    dict(type='Resize', keep_ratio=True),
-                    dict(type='RandomFlip'),
-                    dict(
-                        type='Normalize',
-                        mean=[123.675, 116.28, 103.53],
-                        std=[58.395, 57.12, 57.375],
-                        to_rgb=True),
-                    dict(type='Pad', size_divisor=32),
-                    dict(type='ImageToTensor', keys=['img']),
-                    dict(type='Collect', keys=['img'])
-                ])
-        ]),
+        pipeline=test_pipeline),
     persistent_workers=True)
+"""
+train_dataloader = dict(
+    batch_size=2,
+    num_workers=2,
+    persistent_workers=True,  # Avoid recreating subprocesses after each iteration
+    sampler=dict(type='DefaultSampler', shuffle=True),  # Default sampler, supports both distributed and non-distributed training
+    batch_sampler=dict(type='AspectRatioBatchSampler'),  # Default batch_sampler, used to ensure that images in the batch have similar aspect ratios, so as to better utilize graphics memory
+    dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        ann_file='/dummy/layoutinputs/kotensekicocotrain/train_kotensekicocotrain.json',
+        data_prefix=dict(img='/dummy/layoutinputs/kotensekicocotrain/img/'),
+        filter_cfg=dict(filter_empty_gt=True, min_size=32),
+        pipeline=train_pipeline))
+# In version 3.x, validation and test dataloaders can be configured independently
+val_dataloader = dict(
+    batch_size=1,
+    num_workers=2,
+    persistent_workers=True,
+    drop_last=False,
+    sampler=dict(type='DefaultSampler', shuffle=False),
+    dataset=dict(
+        type=dataset_type,
+        data_root=data_root,
+        ann_file='/dummy/layoutinputs/kotensekicocovalid/train_kotensekicocovalid.json',
+        data_prefix=dict(img='/dummy/layoutinputs/kotensekicocovalid/img/'),
+        test_mode=True,
+        pipeline=test_pipeline))
+test_dataloader = val_dataloader
+
 evaluation = dict(metric=['bbox', 'segm'])
 optimizer = dict(
     constructor='LearningRateDecayOptimizerConstructor',
