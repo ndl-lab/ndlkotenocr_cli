@@ -81,6 +81,7 @@ ndlocr_cli
 ├── cli : CLIコマンド的に利用するPythonスクリプトの格納されたディレクトリ
 ├── src : 各推論処理のソースコード用ディレクトリ
 │   ├── ndl_kotenseki_layout : レイアウト抽出処理のソースコードの格納されたディレクトリ
+|   ├── reading_order：読み順整序処理のソースコードの格納されたディレクトリ
 │   └── text_kotenseki_recognition : 文字認識処理のソースコードの格納されたディレクトリ
 ├── config.yml : サンプルの推論設定ファイル
 ├── docker : Dockerによる環境作成のスクリプトの格納されたディレクトリ
