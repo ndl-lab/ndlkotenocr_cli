@@ -3,12 +3,14 @@ NDL古典籍OCRを利用してテキスト化を実行するためのアプリ�
 
 NDL古典籍OCRは、江戸期以前の和古書、清代以前の漢籍といった古典籍資料のデジタル化画像からテキストデータを作成するOCRです。
 
-2023年1月に公開した[ver.1](https://github.com/ndl-lab/ndlkotenocr_cli/tree/ver.1)から文字認識性能及び読み順整序機能の性能が向上しています。
-
 本プログラムは、国立国会図書館が[令和3年度OCR関連事業](https://lab.ndl.go.jp/data_set/ocr/)から得られた知見や、
 [NDLラボ](https://lab.ndl.go.jp)におけるこれまでの調査研究活動、そして人文情報学分野において構築・蓄積されてきたデータ資源を活用することで独自に開発したものです。
 
-本プログラムを開発するにあたって利用したデータセットや手法の詳細については、[古典籍資料のOCRテキスト化実験](https://lab.ndl.go.jp/data_set/r4ocr/r4_koten/)及び[OCR学習用データセット（みんなで翻刻）](https://github.com/ndl-lab/ndl-minhon-ocrdataset)も参照してください。
+2023年1月に公開した[ver.1](https://github.com/ndl-lab/ndlkotenocr_cli/tree/ver.1)から、文字認識性能及び読み順の整序機能の性能が向上しています。
+
+読み順の整序機能の性能改善に当たっては、[令和4年度OCR関連事業](https://lab.ndl.go.jp/data_set/r4ocr/r4_software/)から得られた知見を活用しています。
+
+本プログラムを開発・改善するに当たって利用したデータセットや手法の詳細については、[古典籍資料のOCRテキスト化実験](https://lab.ndl.go.jp/data_set/r4ocr/r4_koten/)及び[OCR学習用データセット（みんなで翻刻）](https://github.com/ndl-lab/ndl-minhon-ocrdataset)も参照してください。
 
 本プログラムは、国立国会図書館がCC BY 4.0ライセンスで公開するものです。詳細については
 [LICENSE](./LICENSE
