@@ -2,7 +2,7 @@ ndl_kotenseki_layout:
   config_path: 'src/ndl_kotenseki_layout/models/ndl_kotenseki_layout_config.py'
   checkpoint_path: 'src/ndl_kotenseki_layout/models/ndl_kotenseki_layout_v2.pth'
   device: 'cuda:0'
-  'score_thr': 0.3
+  'score_thr': 0.1
 text_kotenseki_recognition:
   saved_preprocessor_model: 'src/text_kotenseki_recognition/models/trocr-base-preprocessor'
   saved_tokenize_model: 'src/text_kotenseki_recognition/models/decoder-roberta-v3'
