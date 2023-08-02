@@ -30,7 +30,7 @@ def check_iou(a, b):
     min_area=min(a_area,b_area)
     #print(intersection_area,min_area)
     #print(intersection_area/min_area)
-    if intersection_area/min_area>0.9:
+    if intersection_area/min_area>0.8 or intersection_area/(a_area+b_area-intersection_area)>0.4:
         #print(intersection_area/min_area)
         return True
     return False
@@ -67,7 +67,6 @@ def remove_dup(coordlist):
     return lines
 
 def reordertext(coordlist,line_width_scale=1.0):
-    coordlist=remove_dup(coordlist)
     lines = np.array([[
         int(line[0]),
         int(line[1]),
@@ -75,9 +74,10 @@ def reordertext(coordlist,line_width_scale=1.0):
         int(line[3]),
     ] for line in coordlist])
     ranks = solve(lines, plot_path=None,logger=None, scale=line_width_scale)
-    zip_ranks=zip(ranks,coordlist)
-    zip_sort=sorted(zip_ranks)
-    ranks,s_coordlist=zip(*zip_sort)
+    #zip_ranks=zip(ranks,coordlist)
+    zip_sort=sorted(zip(ranks,coordlist))
+    s_coordlist=[s[1] for s in zip_sort]
+    s_coordlist=remove_dup(s_coordlist)
     text="".join([t[4] for t in s_coordlist])
     return s_coordlist,text
 
