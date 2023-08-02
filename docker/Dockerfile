@@ -31,8 +31,7 @@ COPY . ${PROJECT_DIR}
 RUN set -x \
     && pip install -r ${PROJECT_DIR}/requirements.txt
 RUN set -x && pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118
-RUN set -x && cd ${PROJECT_DIR}/src/text_kotenseki_recognition/ && unzip -o models.zip
-RUN set -x && cd ${PROJECT_DIR}/src/ndl_kotenseki_layout/ && unzip -o models.zip
+RUN set -x && cd ${PROJECT_DIR}/src/text_kotenseki_recognition/ && unzip -o model-ver2.zip
 RUN set -x && pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.0/index.html
 
 WORKDIR ${PROJECT_DIR}
