@@ -4,9 +4,9 @@ ndl_kotenseki_layout:
   device: 'cuda:0'
   'score_thr': 0.1
 text_kotenseki_recognition:
-  saved_preprocessor_model: 'src/text_kotenseki_recognition/models/trocr-base-preprocessor'
-  saved_tokenize_model: 'src/text_kotenseki_recognition/models/decoder-roberta-v3'
-  saved_ocr_model: 'src/text_kotenseki_recognition/models/kotenseki-trocr-honkoku-v3'
+  saved_preprocessor_model: 'src/text_kotenseki_recognition/model-ver2/trocr-base-preprocessor'
+  saved_tokenize_model: 'src/text_kotenseki_recognition/model-ver2/decoder-roberta-v3'
+  saved_ocr_model: 'src/text_kotenseki_recognition/model-ver2/kotenseki-trocr-honkoku-v3'
   accept_empty: True
   batch_size: 100
   device: 'cuda:0'
