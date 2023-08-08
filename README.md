@@ -15,7 +15,13 @@ NDL古典籍OCRは、江戸期以前の和古書、清代以前の漢籍とい�
 本プログラムは、国立国会図書館がCC BY 4.0ライセンスで公開するものです。詳細については
 [LICENSE](./LICENSE
 )をご覧ください。
- 
+
+ **2023年8月まで公開していたバージョンを継続して利用したい場合には、[ver.1](https://github.com/ndl-lab/ndlkotenocr_cli/tree/ver.1)をご利用ください。**
+```
+git clone --recursive https://github.com/ndl-lab/ndlkotenocr_cli -b ver.1
+```
+のようにソースコード取得部分を書き換えることで継続してお使いいただけます。
+
 ## 環境構築
 
 ### 1. リポジトリのクローン
