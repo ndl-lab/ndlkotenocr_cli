@@ -18,7 +18,7 @@ NDL古典籍OCRは、江戸期以前の和古書、清代以前の漢籍とい�
 
  **2023年8月まで公開していたバージョンを継続して利用したい場合には、[ver.1](https://github.com/ndl-lab/ndlkotenocr_cli/tree/ver.1)をご利用ください。**
 ```
-git clone --recursive https://github.com/ndl-lab/ndlkotenocr_cli -b ver.1
+git clone https://github.com/ndl-lab/ndlkotenocr_cli -b ver.1
 ```
 のようにソースコード取得部分を書き換えることで継続してお使いいただけます。
 
