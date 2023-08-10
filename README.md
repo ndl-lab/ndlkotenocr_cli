@@ -31,13 +31,13 @@ git clone https://github.com/ndl-lab/ndlkotenocr_cli
 ```
 
 ### 2. ホストマシンのNVIDIA Driverのアップデート
-コンテナ内でCUDA 11.1を利用します。
+コンテナ内でCUDA 11.8を利用します。
 
 ホストマシンのNVIDIA Driverが
 
-Linuxの場合: 455.23以上 
+Linuxの場合: 520.61.05以上 
 
-Windowsの場合:456.38以上
+Windowsの場合:520.06以上
 
 のバージョンを満たさない場合は、ご利用のGPUに対応するドライバの更新を行ってください。
 
@@ -49,7 +49,7 @@ OS: Ubuntu 18.04.5 LTS
 
 GPU: GeForce RTX 2080Ti
 
-NVIDIA Driver: 455.45.01
+NVIDIA Driver: 510.47.03
 
 
 ### 3. dockerのインストール
