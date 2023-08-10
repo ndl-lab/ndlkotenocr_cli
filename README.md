@@ -35,7 +35,7 @@ git clone https://github.com/ndl-lab/ndlkotenocr_cli
 
 ホストマシンのNVIDIA Driverが
 
-Linuxの場合: 520.61.05以上 
+Linuxの場合: 450.36.06以上 
 
 Windowsの場合:520.06以上
 
@@ -43,13 +43,13 @@ Windowsの場合:520.06以上
 
 （参考情報）
 
-以下の環境で動作確認を行っています。
+以下のホストマシン環境（AWS g5.xlargeインスタンス）上で動作確認を行っています。
 
-OS: Ubuntu 18.04.5 LTS
+OS: Ubuntu 18.04.6 LTS
 
-GPU: GeForce RTX 2080Ti
+GPU: NVIDIA A10G
 
-NVIDIA Driver: 510.47.03
+NVIDIA Driver: 470.182.03
 
 
 ### 3. dockerのインストール
