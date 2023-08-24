@@ -48,9 +48,7 @@ class LayoutDetector:
         #self.classes = cfg.classes
         #self.colors = generate_class_colors(len(self.classes))
 
-    def load(self, config: str, checkpoint: str, device: str):
         self.model = init_detector(config, checkpoint,None,device)
-
     def predict(self, img_path: str):
         return inference_detector(self.model, img_path)
 
