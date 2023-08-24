@@ -15,7 +15,13 @@ NDL古典籍OCRは、江戸期以前の和古書、清代以前の漢籍とい�
 本プログラムは、国立国会図書館がCC BY 4.0ライセンスで公開するものです。詳細については
 [LICENSE](./LICENSE
 )をご覧ください。
- 
+
+ **2023年8月まで公開していたバージョンを継続して利用したい場合には、[ver.1](https://github.com/ndl-lab/ndlkotenocr_cli/tree/ver.1)をご利用ください。**
+```
+git clone https://github.com/ndl-lab/ndlkotenocr_cli -b ver.1
+```
+のようにソースコード取得部分を書き換えることで継続してお使いいただけます。
+
 ## 環境構築
 
 ### 1. リポジトリのクローン
@@ -25,25 +31,25 @@ git clone https://github.com/ndl-lab/ndlkotenocr_cli
 ```
 
 ### 2. ホストマシンのNVIDIA Driverのアップデート
-コンテナ内でCUDA 11.1を利用します。
+コンテナ内でCUDA 11.8を利用します。
 
 ホストマシンのNVIDIA Driverが
 
-Linuxの場合: 455.23以上 
+Linuxの場合: 450.36.06以上 
 
-Windowsの場合:456.38以上
+Windowsの場合:520.06以上
 
 のバージョンを満たさない場合は、ご利用のGPUに対応するドライバの更新を行ってください。
 
 （参考情報）
 
-以下の環境で動作確認を行っています。
+以下のホストマシン環境（AWS g5.xlargeインスタンス）上で動作確認を行っています。
 
-OS: Ubuntu 18.04.5 LTS
+OS: Ubuntu 18.04.6 LTS
 
-GPU: GeForce RTX 2080Ti
+GPU: NVIDIA A10G
 
-NVIDIA Driver: 455.45.01
+NVIDIA Driver: 470.182.03
 
 
 ### 3. dockerのインストール
