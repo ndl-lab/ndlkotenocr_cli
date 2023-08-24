@@ -44,26 +44,32 @@ def check_dup(aconf,bconf):
     return 0
 
 def remove_dup(coordlist):
-    lines=list()
     complines = list()
-    for element in coordlist:
-        xmin,ymin,xmax,ymax,text=element
-        conf = (xmax-xmin)*(ymax-ymin)
-        checkdupval=0
-        if len(lines)!=0:
-            checkdupval=check_dup(complines[-1],[xmin,ymin,xmax,ymax,conf])
-        if checkdupval==0:#重複なし
-            lines.append(element)
-            complines.append([xmin,ymin,xmax,ymax,conf])
-        elif checkdupval==1:#重複あり （今見ているlineをスキップ）
+    skipset=set()
+    for eidx1 in range(len(coordlist)):
+        if eidx1 in skipset:
             continue
-        elif checkdupval==2:#重複あり（比較対象を削除）
-            del lines[-1]
-            del complines[-1]
+        element1=coordlist[eidx1]
+        bbox1=element1[:4]
+        conf1 = (bbox1[2]-bbox1[0])*(bbox1[3]-bbox1[1])
+        bbox1.append(conf1)
+        for eidx2 in range(eidx1+1,len(coordlist)):
+            if eidx2 in skipset:
+                continue
+            element2=coordlist[eidx2]
+            bbox2=element2[:4]
+            conf2 = (bbox2[2]-bbox2[0])*(bbox2[3]-bbox2[1])
+            bbox2.append(conf2)
+            checkdupval=check_dup(bbox1,bbox2)
+            if checkdupval==1:#重なりありかつbbox1の方が確信度高い
+                skipset.add(eidx2)
+            elif checkdupval==2:
+                skipset.add(eidx1)
+                break
+    lines=list()
+    for eidx,element in enumerate(coordlist):
+        if not eidx in skipset:
             lines.append(element)
-            complines.append([xmin,ymin,xmax,ymax,conf])
-        else:
-            print("error!")
     return lines
 
 def reordertext(coordlist,line_width_scale=1.0):

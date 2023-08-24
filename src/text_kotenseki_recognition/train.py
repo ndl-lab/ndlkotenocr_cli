@@ -45,7 +45,8 @@ OUTPUT_DIR="/root/text_recognize_model"
 BATCH_SIZE=24
 ##
 cer_metric = load_metric("cer")
-
+ndltokenizer=AutoTokenizer.from_pretrained("src/text_kotenseki_recognition/models/decoder-roberta-v3")
+ndlprocessor = TrOCRProcessor.from_pretrained("src/text_kotenseki_recognition/models/trocr-base-preprocessor")
 
 def onelinedataloader():
     inputfpathlist=[]
@@ -108,24 +109,21 @@ class IAMDataset(Dataset):
         return encoding
 
 def compute_cer(pred_ids, label_ids):
-    pred_str = tokenizer.batch_decode(pred_ids, skip_special_tokens=True)
-    label_ids[label_ids == -100] = tokenizer.pad_token_id
-    label_str = tokenizer.batch_decode(label_ids, skip_special_tokens=True)
+    pred_str = ndltokenizer.batch_decode(pred_ids, skip_special_tokens=True)
+    label_ids[label_ids == -100] = ndltokenizer.pad_token_id
+    label_str = ndltokenizer.batch_decode(label_ids, skip_special_tokens=True)
 
     cer = cer_metric.compute(predictions=pred_str, references=label_str)
     return cer
 
 def main():
     train_df,test_df=onelinedataloader()
-    tokenizer=AutoTokenizer.from_pretrained("src/text_kotenseki_recognition/models/decoder-roberta-v3")
-
-    processor = TrOCRProcessor.from_pretrained("src/text_kotenseki_recognition/models/trocr-base-preprocessor")
     train_dataset = IAMDataset(root_dir='',
                                df=train_df,
-                               processor=processor,tokenizer=tokenizer,augment=True)
+                               processor=ndlprocessor,tokenizer=ndltokenizer,augment=True)
     eval_dataset = IAMDataset(root_dir='',
                                df=test_df,
-                               processor=processor,tokenizer=tokenizer,augment=False)
+                               processor=ndlprocessor,tokenizer=ndltokenizer,augment=False)
 
     print("Number of training examples:", len(train_dataset))
     print("Number of validation examples:", len(eval_dataset))
@@ -138,13 +136,13 @@ def main():
         model = VisionEncoderDecoderModel.from_pretrained(PRETRAIN_MODEL)
     model.to(device)
     # set special tokens used for creating the decoder_input_ids from the labels
-    model.config.decoder_start_token_id = tokenizer.cls_token_id
-    model.config.pad_token_id = tokenizer.pad_token_id
+    model.config.decoder_start_token_id = ndltokenizer.cls_token_id
+    model.config.pad_token_id = ndltokenizer.pad_token_id
     # make sure vocab size is set correctly
     model.config.vocab_size = model.config.decoder.vocab_size
 
     # set beam search parameters
-    model.config.eos_token_id = tokenizer.sep_token_id
+    model.config.eos_token_id = ndltokenizer.sep_token_id
     model.config.max_length = 100
     model.config.early_stopping = True
     model.config.no_repeat_ngram_size = 3
