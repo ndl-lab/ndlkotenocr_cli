@@ -31,6 +31,18 @@ COPY . ${PROJECT_DIR}
 RUN set -x \
     && pip install -r ${PROJECT_DIR}/requirements.txt
 RUN set -x && pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118
+
+RUN set -x && pip uninstall -y mmdet
+RUN set -x \
+    && cd ${PROJECT_DIR}/src/ndl_kotenseki_layout \
+    && git clone https://github.com/open-mmlab/mmdetection.git -b v3.0.0 \
+    && cd ${PROJECT_DIR}/src/ndl_kotenseki_layout/mmdetection \
+    && sed -i -e 's/GPU_MEM_LIMIT = 1024\*\*3/GPU_MEM_LIMIT = 1024\*\*3\/\/4/' mmdet/models/roi_heads/mask_heads/fcn_mask_head.py \
+    && python setup.py bdist_wheel \
+    && pip install dist/*.whl
+
+RUN set -x && wget -nc https://lab.ndl.go.jp/dataset/ndlkotensekiocr/trocr/model-ver2.zip -P ${PROJECT_DIR}/src/text_kotenseki_recognition/
+RUN set -x && wget -nc https://lab.ndl.go.jp/dataset/ndlkotensekiocr/layoutmodel/ndl_kotenseki_layout_ver2.pth -P ${PROJECT_DIR}/src/ndl_kotenseki_layout/models/
 RUN set -x && cd ${PROJECT_DIR}/src/text_kotenseki_recognition/ && unzip -o model-ver2.zip
 RUN set -x && pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.0/index.html
 

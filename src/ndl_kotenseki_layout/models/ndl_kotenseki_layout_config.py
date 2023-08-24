@@ -119,11 +119,11 @@ model = dict(
         rpn=dict(
             nms_pre=1000,
             max_per_img=1000,
-            nms=dict(type='nms', iou_threshold=0.7),
+            nms=dict(type='nms', iou_threshold=0.3),
             min_bbox_size=0),
         rcnn=dict(
             score_thr=0.05,
-            nms=dict(type='soft_nms', iou_threshold=0.5),
+            nms=dict(type='soft_nms', iou_threshold=0.3),
             max_per_img=1000,
             mask_thr_binary=0.5)),
     _scope_='mmdet')

@@ -79,7 +79,7 @@ class OcrInferencer:
             for single_outputdir_data in single_outputdir_data_list:
                 if single_outputdir_data is None:
                     continue
-                pred_list = self._infer(single_outputdir_data)
+                self._infer(single_outputdir_data)
 
                 # save inferenced json in json directory
                 #self._save_pred_json(single_outputdir_data['output_dir'], [single_data['json'] for single_data in pred_list])
@@ -107,7 +107,6 @@ class OcrInferencer:
             1ページ分の推論結果を要素に持つ推論結果のリスト。
             各結果は辞書型で保持されています。
         """
-        pred_list = []
         pred_xml_dict_for_dump = {}
 
         for img_path in single_outputdir_data['img_list']:
@@ -157,10 +156,9 @@ class OcrInferencer:
                 self._save_pred_json(outputdirpath,os.path.basename(img_path),
                         [single_data['json'] for single_data in single_image_file_output])
             
-            pred_list.extend(single_image_file_output)
             print('########  END PAGE INFERENCE PROCESS  ########')
 
-        return pred_list
+        return
 
     def _get_single_dir_data(self, input_dir):
         """
