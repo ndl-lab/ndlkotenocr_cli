@@ -6,6 +6,9 @@ ENV TORCH_CUDA_ARCH_LIST="7.5+PTX"
 ENV TORCH_NVCC_FLAGS="-Xfatbin -compress-all"
 ENV DEBIAN_FRONTEND=noninteractive
 
+ENV http_proxy http://10.41.71.1:8080
+ENV https_proxy http://10.41.71.1:8080
+
 RUN set -x \
     && apt update \
     && apt upgrade -y
@@ -30,6 +33,7 @@ COPY . ${PROJECT_DIR}
 
 RUN set -x \
     && pip install -r ${PROJECT_DIR}/requirements.txt
+RUN set -x && pip install celery==4.4.6 flask
 RUN set -x && pip install torch==2.0.0+cu118 torchvision==0.15.1+cu118 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118
 
 RUN set -x && pip uninstall -y mmdet
@@ -47,3 +51,5 @@ RUN set -x && cd ${PROJECT_DIR}/src/text_kotenseki_recognition/ && unzip -o mode
 RUN set -x && pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.0/index.html
 
 WORKDIR ${PROJECT_DIR}
+
+CMD ["python","-m","celery","-A","worker","worker","--loglevel=info"]
