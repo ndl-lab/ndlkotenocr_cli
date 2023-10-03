@@ -85,7 +85,22 @@ def reordertext(coordlist,line_width_scale=1.0):
     s_coordlist=[s[1] for s in zip_sort]
     s_coordlist=remove_dup(s_coordlist)
     text="".join([t[4] for t in s_coordlist])
-    return s_coordlist,text
+    #convert to ver1 json format
+    resdictlist=[]
+    for idx,sc in enumerate(s_coordlist):
+        resdict={}
+        xmin=min(sc[0],sc[2])
+        xmax=max(sc[0],sc[2])
+        ymin=min(sc[1],sc[3])
+        ymax=max(sc[1],sc[3])
+        resdict["boundingBox"]=[[xmin,ymin],[xmin,ymax],[xmax,ymin],[xmax,ymax]]
+        resdict["id"]=idx
+        resdict["isVertical"]="true"
+        resdict["text"]=sc[4]
+        resdict["isTextline"]="true"
+        resdict["confidence"]=1
+        resdictlist.append(resdict)
+    return resdictlist,text
 
 class InferencerWithCLI:
     def __init__(self, conf_dict):
