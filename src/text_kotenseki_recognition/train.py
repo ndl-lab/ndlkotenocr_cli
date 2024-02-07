@@ -38,15 +38,16 @@ text_kotenseki_recognitionのsaved_ocr_modelの示すディレクトリパスを
 """
 
 ##config
+
 ONE_LINE_DATASET_DIRECTORY="/root/honkoku_oneline/"
 PRETRAIN_MODEL=None
-#PRETRAIN_MODEL="src/text_kotenseki_recognition/models/kotenseki-trocr-honkoku-v3"
-OUTPUT_DIR="/root/text_recognize_model"
+#PRETRAIN_MODEL="/root/kotenocr_cli/src/text_kotenseki_recognition/model-ver2/kotenseki-trocr-honkoku-ver2/"
+OUTPUT_DIR="/root/kotenocr_cli/src/text_kotenseki_recognition/"
 BATCH_SIZE=24
 ##
 cer_metric = load_metric("cer")
-ndltokenizer=AutoTokenizer.from_pretrained("src/text_kotenseki_recognition/models/decoder-roberta-v3")
-ndlprocessor = TrOCRProcessor.from_pretrained("src/text_kotenseki_recognition/models/trocr-base-preprocessor")
+ndltokenizer=AutoTokenizer.from_pretrained("/root/kotenocr_cli/src/text_kotenseki_recognition/model-ver2/decoder-roberta-v3")
+ndlprocessor = TrOCRProcessor.from_pretrained("/root/kotenocr_cli/src/text_kotenseki_recognition/model-ver2/trocr-base-preprocessor")
 
 def onelinedataloader():
     inputfpathlist=[]
