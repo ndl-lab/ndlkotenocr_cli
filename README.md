@@ -233,6 +233,8 @@ python main.py infer input_root output_dir -a
 
 
 ## モデルの再学習について
-2023年1月現在、文字列認識モデルの再学習手順を公開しています。
-[train.py](/src/text_kotenseki_recognition/train.py)
-を参照してください。
+2024年2月現在、レイアウト認識モデル及び文字列認識モデルの再学習手順を公開しています。
+
+レイアウト認識モデルについては[train-layout.ipynb](/src/ndl_kotenseki_layout/train-layout.ipynb)及び[cococonverter-NDLDocL](/src/ndl_kotenseki_layout/cococonverter-NDLDocL.ipynb)を参照してください。
+
+文字列認識モデルについては[train.py](/src/text_kotenseki_recognition/train.py)を参照してください。
