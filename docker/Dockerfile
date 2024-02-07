@@ -42,7 +42,7 @@ RUN set -x \
     && pip install dist/*.whl
 
 RUN set -x && wget -nc https://lab.ndl.go.jp/dataset/ndlkotensekiocr/trocr/model-ver2.zip -P ${PROJECT_DIR}/src/text_kotenseki_recognition/
-RUN set -x && wget -nc https://lab.ndl.go.jp/dataset/ndlkotensekiocr/layoutmodel/ndl_kotenseki_layout_ver2.pth -P ${PROJECT_DIR}/src/ndl_kotenseki_layout/models/
+RUN set -x && wget -nc https://lab.ndl.go.jp/dataset/ndlkotensekiocr/layoutmodel/ndl_kotenseki_layout_ver3.pth -P ${PROJECT_DIR}/src/ndl_kotenseki_layout/models/
 RUN set -x && cd ${PROJECT_DIR}/src/text_kotenseki_recognition/ && unzip -o model-ver2.zip
 RUN set -x && pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu118/torch2.0/index.html
 

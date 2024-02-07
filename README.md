@@ -1,4 +1,4 @@
-# NDL古典籍OCRアプリケーション(ver.2)
+# NDL古典籍OCRアプリケーション(ver.3)
 NDL古典籍OCRを利用してテキスト化を実行するためのアプリケーションを提供するリポジトリです。 
 
 NDL古典籍OCRは、江戸期以前の和古書、清代以前の漢籍といった古典籍資料のデジタル化画像からテキストデータを作成するOCRです。
@@ -6,7 +6,11 @@ NDL古典籍OCRは、江戸期以前の和古書、清代以前の漢籍とい�
 本プログラムは、国立国会図書館が[令和3年度OCR関連事業](https://lab.ndl.go.jp/data_set/ocr/)から得られた知見や、
 [NDLラボ](https://lab.ndl.go.jp)におけるこれまでの調査研究活動、そして人文情報学分野において構築・蓄積されてきたデータ資源を活用することで独自に開発したものです。
 
-2023年1月に公開した[ver.1](https://github.com/ndl-lab/ndlkotenocr_cli/tree/ver.1)から、文字認識性能及び読み順の整序機能の性能が向上しています。
+2023年8月に公開した[ver.2](https://github.com/ndl-lab/ndlkotenocr_cli/tree/ver.2)から、漢籍資料のレイアウト認識性能が向上しています。
+
+**漢籍資料のテキスト化において、ver.2のレイアウト認識性能がver.1よりも低下する傾向が報告されています。特に漢籍資料のテキスト化にNDL古典籍OCRを用いる際にはver.3へのアップデートを推奨します。**
+
+参考：[永崎研宣, et al. OCR の高精度化を踏まえたデジタル学術編集版の新展開. じんもんこん 2023 論文集, 2023, 2023: 177-182.（外部サイト）](http://id.nii.ac.jp/1001/00231250/)
 
 読み順の整序機能の性能改善に当たっては、[令和4年度OCR関連事業](https://lab.ndl.go.jp/data_set/r4ocr/r4_software/)から得られた知見を活用しています。
 
@@ -17,8 +21,12 @@ NDL古典籍OCRは、江戸期以前の和古書、清代以前の漢籍とい�
 )をご覧ください。
 
  **2023年8月まで公開していたバージョンを継続して利用したい場合には、[ver.1](https://github.com/ndl-lab/ndlkotenocr_cli/tree/ver.1)をご利用ください。**
+ **2024年2月まで公開していたバージョンを継続して利用したい場合には、[ver.2](https://github.com/ndl-lab/ndlkotenocr_cli/tree/ver.2)をご利用ください。**
 ```
 git clone https://github.com/ndl-lab/ndlkotenocr_cli -b ver.1
+```
+```
+git clone https://github.com/ndl-lab/ndlkotenocr_cli -b ver.2
 ```
 のようにソースコード取得部分を書き換えることで継続してお使いいただけます。
 
@@ -206,9 +214,9 @@ python main.py infer input_root output_dir -a
 このオプションを有効化すると出力jsonの形式が以下の構造になります。
 ```
 {
-  "contents":{
+  "contents":[
     (各文字列矩形の座標、認識文字列等)
-  },
+  ],
   "imginfo": {
     "img_width": (元画像の幅),
     "img_height": (元画像の高さ),

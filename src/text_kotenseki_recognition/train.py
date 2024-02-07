@@ -22,6 +22,16 @@ import datetime
 
 NDL古典籍OCR学習用データセット(https://github.com/ndl-lab/ndl-minhon-ocrdataset)
 の「利用方法」に沿って1行データセットを作成していることを前提としています。
+1行データセットは行ごとにユニークになるように命名し、
+.jpgを1行画像、.txtを当該画像内のテキストをUTF-8で記述したファイルとして同じディレクトリ内に格納してください。
+
+データセットの階層の例
+honkoku_oneline
+    |-001.jpg
+    |-001.txt
+    |-002.jpg
+    |-002.txt
+    :
 
 下のconfigにある、ONE_LINE_DATASET_DIRECTORYに1行データセットのディレクトリパスを指定します。
 フルスクラッチで学習を行いたい場合、
@@ -38,15 +48,17 @@ text_kotenseki_recognitionのsaved_ocr_modelの示すディレクトリパスを
 """
 
 ##config
+#1行データセットの配置先
 ONE_LINE_DATASET_DIRECTORY="/root/honkoku_oneline/"
 PRETRAIN_MODEL=None
-#PRETRAIN_MODEL="src/text_kotenseki_recognition/models/kotenseki-trocr-honkoku-v3"
-OUTPUT_DIR="/root/text_recognize_model"
+#事前学習済みモデルを利用する場合
+#PRETRAIN_MODEL="/root/kotenocr_cli/src/text_kotenseki_recognition/model-ver2/kotenseki-trocr-honkoku-ver2/"
+OUTPUT_DIR="/root/kotenocr_cli/src/text_kotenseki_recognition/"
 BATCH_SIZE=24
 ##
 cer_metric = load_metric("cer")
-ndltokenizer=AutoTokenizer.from_pretrained("src/text_kotenseki_recognition/models/decoder-roberta-v3")
-ndlprocessor = TrOCRProcessor.from_pretrained("src/text_kotenseki_recognition/models/trocr-base-preprocessor")
+ndltokenizer=AutoTokenizer.from_pretrained("/root/kotenocr_cli/src/text_kotenseki_recognition/model-ver2/decoder-roberta-v3")
+ndlprocessor = TrOCRProcessor.from_pretrained("/root/kotenocr_cli/src/text_kotenseki_recognition/model-ver2/trocr-base-preprocessor")
 
 def onelinedataloader():
     inputfpathlist=[]
