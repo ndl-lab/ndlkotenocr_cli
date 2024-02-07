@@ -214,9 +214,9 @@ python main.py infer input_root output_dir -a
 このオプションを有効化すると出力jsonの形式が以下の構造になります。
 ```
 {
-  "contents":{
+  "contents":[
     (各文字列矩形の座標、認識文字列等)
-  },
+  ],
   "imginfo": {
     "img_width": (元画像の幅),
     "img_height": (元画像の高さ),
