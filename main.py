@@ -9,8 +9,8 @@ import json
 import os
 import sys
 
-from cli.core import OcrInferencer
-from cli.core import utils
+from ocrcli.core import OcrInferencer
+from ocrcli.core import utils
 
 
 @click.group()
