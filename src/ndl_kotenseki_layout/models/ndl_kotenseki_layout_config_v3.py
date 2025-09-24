@@ -8,7 +8,7 @@ model = dict(
         pad_mask=True,
         pad_size_divisor=32),
     backbone=dict(
-        type='mmcls.ConvNeXt',
+        type='mmpretrain.ConvNeXt',
         arch='tiny',
         out_indices=[0, 1, 2, 3],
         drop_path_rate=0.4,
@@ -354,7 +354,7 @@ workflow = [('train', 1)]
 opencv_num_threads = 0
 mp_start_method = 'fork'
 auto_scale_lr = dict(enable=False, base_batch_size=16)
-custom_imports = dict(imports=['mmcls.models'], allow_failed_imports=False)
+custom_imports = dict(imports=['mmpretrain.models'], allow_failed_imports=False)
 checkpoint_file = 'https://download.openmmlab.com/mmclassification/v0/convnext/downstream/convnext-tiny_3rdparty_32xb128-noema_in1k_20220301-795e9634.pth'
 fp16 = dict(loss_scale=dict(init_scale=512))
 work_dir = '/hdd1/kotensekiocrmodel/work_dir_mmdet_cascademaskrcnn-convnext'

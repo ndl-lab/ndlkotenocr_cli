@@ -1,4 +1,4 @@
-TAG=kotenocr-cli-py37
+TAG=kotenocr-cli-py310
 DOCKERIGNORE=docker/dockerignore
 DOCKERFILE=docker/Dockerfile
 cp ${DOCKERIGNORE} .dockerignore
