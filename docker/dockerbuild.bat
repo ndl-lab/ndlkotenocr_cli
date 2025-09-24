@@ -1,4 +1,4 @@
-SET TAG=kotenocr-cli-py37
+SET TAG=kotenocr-cli-py310
 SET DOCKERIGNORE=docker\dockerignore
 SET DOCKERFILE=docker\Dockerfile
 
