@@ -10,7 +10,7 @@ import cv2
 from albumentations import Compose, ShiftScaleRotate, RGBShift, \
 HueSaturationValue,ToGray, RandomBrightnessContrast, RandomGamma,RandomRain
 import numpy as np
-from transformers import TrOCRProcessor
+from transformers import TrOCRProcessor,VisionEncoderDecoderModel
 from transformers import AutoTokenizer,AutoModelForMaskedLM
 from torch.utils.data import DataLoader
 from datasets import load_metric
